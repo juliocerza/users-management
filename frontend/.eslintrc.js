@@ -1,5 +1,8 @@
 module.exports = {
-  extends: ["plugin:vue/vue3-essential", "prettier"],
+  env: {
+    node: true,
+  },
+  extends: ["plugin:vue/vue3-essential", "eslint:recommended", "prettier"],
   rules: {
     "vue/no-unused-vars": "error",
   },
