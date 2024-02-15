@@ -5,6 +5,7 @@ export default {
     return {
       users: [],
       showModal: false,
+      deleteUserId: -1,
     };
   },
 
@@ -32,8 +33,26 @@ export default {
       this.showModal = false;
     },
     shownModal(id) {
-      console.log(`id: ${id}`);
+      this.deleteUserId = id;
       this.showModal = true;
+    },
+    deleteUser() {
+      let req = {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
+        },
+      };
+      axios
+        .delete(`http://localhost:2300/users/${this.deleteUserId}`, req)
+        .then((res) => {
+          console.log(res);
+          this.showModal = false;
+          this.users = this.users.filter((u) => u.id != this.deleteUserId);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.showModal = false;
+        });
     },
   },
 };
@@ -58,7 +77,8 @@ export default {
           <td>{{ user.email }}</td>
           <td>{{ displayRole(user.role) }}</td>
           <td>
-            <button class="button is-success">Editar</button
+            <router-link :to="{ name: 'Edit', params: { id: user.id } }"
+              ><button class="button is-success">Editar</button></router-link
             ><button class="button is-danger" @click="shownModal(user.id)">
               Deletar
             </button>
@@ -81,7 +101,9 @@ export default {
             <a href="#" class="card-footer-item" @click="hideModal()"
               >Cancelar</a
             >
-            <a href="#" class="card-footer-item">Deletar</a>
+            <a href="#" class="card-footer-item" @click="deleteUser()"
+              >Deletar</a
+            >
           </footer>
         </div>
       </div>
