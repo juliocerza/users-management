@@ -25,7 +25,7 @@ class UserController {
 
   async create(req, res) {
     let { name, email, password } = req.body;
-    if (email == undefined) {
+    if (email == undefined || email == "" || email == " ") {
       res.status(400).send("The e-mail is invalid!");
       return;
     }
@@ -100,10 +100,10 @@ class UserController {
         );
         res.status(200).json({ token: token });
       } else {
-        res.status(406).send("Incorrect password!");
+        res.status(406).send("Senha incorreta!");
       }
     } else {
-      res.json({ status: false });
+      res.status(406).json({ status: false, err: "O usuário não existe" });
     }
   }
 }

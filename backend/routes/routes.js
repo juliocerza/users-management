@@ -13,5 +13,6 @@ router.delete("/users/:id", AdminAuth, UserController.remove);
 router.post("/recover", UserController.recoverPassword);
 router.post("/change", UserController.changePassword);
 router.post("/login", UserController.login);
+router.post("/validate", AdminAuth, HomeController.validate);
 
 module.exports = router;
